@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 const cors = require('cors');
+const path = require('path');
+
 const port = process.env.PORT || 3001
 
 // Enable CORS for all routes and domains
@@ -9,11 +11,18 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow the methods you need
 }));
 
-app.use(express.static("public"))
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+// Serve static files from the 'public' folder
+app.use(express.static(path.join(__dirname, 'public')));
 
+// Define the route to access the JSON file
+app.get('/products', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'db.json'));
+});
+
+app.get('/products', (req, res) => {
+    res.send("hello world")
+  });
+  
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
